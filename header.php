@@ -1,5 +1,5 @@
 <?php
- /*
+ /**
   * The header for the theme.
   * 
   * Displays all fo the head sections.
@@ -20,9 +20,7 @@
     <meta charset="<?php bloginfo( 'charset' ); ?>" />
     <meta name="viewport" content="width-device-width" />
     <title><?php
-/*
- * Print the title tag of current blog.
- */
+    
         global $page, $paged;
 
         wp_title( '|', true, 'right' );
