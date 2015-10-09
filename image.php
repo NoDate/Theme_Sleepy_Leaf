@@ -92,6 +92,7 @@
                                     }
                                 }
                             ?>
+                            
                             <a href="<?php echo $next_attachment_url; ?>"
                                title="<?php echo esc_attr( get_the_title() ); ?>"
                                rel="attachment">
@@ -101,51 +102,47 @@
                                 ?>
                             </a>
                         </div>
+                        
+                        <?php if( ! empty( $post->post_excerpt ) ) : ?>
+                        <div class="entry-caption">
+                            <?php the_excerpt(); ?>
+                        </div>
+                        <?php endif; ?>
                     </div>
+                    
+                    <?php the_content(); ?>
+                    <?php wp_link_pages( array(
+                        'before' => '<div class="page-links">' . __( 'Pages:', 'sleepy_leaf' ),
+                        'after' => '</div>' ) );
+                    ?>
                 </div>
+                
+                <footer class="entry-meta">
+                    <?php
+                    
+                        // Display comments.
+                        if( comments_open() && pings_open() ) {
+                            printf( __( '<a class="comment-link" href="#respond" title="Post a comment">Post a comment</a> or leave a trackback:'
+                                    . '<a class="trackback-link" href="%s" title="Trackback URL for your post" rel="trackback">Trackback URL</a>.',
+                                    'sleepy_leaf' ), get_trackback_url() );
+                        } elseif( ! comments_open() && pings_open() ) {
+                            printf( __( 'Comments are closed, but you can leave trackback: <a class="trackback-link" href="%s" '
+                                    . 'title="Trackback URL for your post" rel="trackback">Trackback URL</a>.', 'sleepy_leaf' ), get_trackback_url() );
+                        } elseif( comments_open() && ! pings_open() ) {
+                            _e( 'Trackbacks are closed, but you can <a class="comment-link" href="#respond" '
+                                    . 'title="Post a comment">post a comment</a>.', 'sleepy_leaf' );
+                        } elseif( ! comments_open() && ! pings_opn() ) {
+                            _e( 'Both comments and tracbacks are currently closed.', 'sleepy_leaf' );
+                        }
+                        
+                        edit_post_link( __( 'Edit', 'sleepy_leaf' ), ' <span class="edit-link">', '</span>' );
+                    ?>
+                </footer>
             </article>
-        <?php endwhile; ?>
+        <?php
+            endwhile;
+            comments_template();
+        ?>
     </div>
 </div>
-
- 
-                                <a href="<?php echo $next_attachment_url; ?>" title="<?php echo esc_attr( get_the_title() ); ?>" rel="attachment"><?php
-                                    $attachment_size = apply_filters( 'shape_attachment_size', array( 1200, 1200 ) ); // Filterable image size.
-                                    echo wp_get_attachment_image( $post->ID, $attachment_size );
-                                ?></a>
-                            </div><!-- .attachment -->
- 
-                            <?php if ( ! empty( $post->post_excerpt ) ) : ?>
-                            <div class="entry-caption">
-                                <?php the_excerpt(); ?>
-                            </div><!-- .entry-caption -->
-                            <?php endif; ?>
-                        </div><!-- .entry-attachment -->
- 
-                        <?php the_content(); ?>
-                        <?php wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Pages:', 'shape' ), 'after' => '</div>' ) ); ?>
- 
-                    </div><!-- .entry-content -->
- 
-                    <footer class="entry-meta">
-                        <?php if ( comments_open() && pings_open() ) : // Comments and trackbacks open ?>
-                            <?php printf( __( '<a class="comment-link" href="#respond" title="Post a comment">Post a comment</a> or leave a trackback: <a class="trackback-link" href="%s" title="Trackback URL for your post" rel="trackback">Trackback URL</a>.', 'shape' ), get_trackback_url() ); ?>
-                        <?php elseif ( ! comments_open() && pings_open() ) : // Only trackbacks open ?>
-                            <?php printf( __( 'Comments are closed, but you can leave a trackback: <a class="trackback-link" href="%s" title="Trackback URL for your post" rel="trackback">Trackback URL</a>.', 'shape' ), get_trackback_url() ); ?>
-                        <?php elseif ( comments_open() && ! pings_open() ) : // Only comments open ?>
-                            <?php _e( 'Trackbacks are closed, but you can <a class="comment-link" href="#respond" title="Post a comment">post a comment</a>.', 'shape' ); ?>
-                        <?php elseif ( ! comments_open() && ! pings_open() ) : // Comments and trackbacks closed ?>
-                            <?php _e( 'Both comments and trackbacks are currently closed.', 'shape' ); ?>
-                        <?php endif; ?>
-                        <?php edit_post_link( __( 'Edit', 'shape' ), ' <span class="edit-link">', '</span>' ); ?>
-                    </footer><!-- .entry-meta -->
-                </article><!-- #post-<?php the_ID(); ?> -->
- 
-                <?php comments_template(); ?>
- 
-            <?php endwhile; // end of the loop. ?>
- 
-            </div><!-- #content .site-content -->
-        </div><!-- #primary .content-area .image-attachment -->
- 
 <?php get_footer(); ?>

@@ -1,1 +1,1 @@
-This is a wordpress theme.
+This is a WordPress theme.

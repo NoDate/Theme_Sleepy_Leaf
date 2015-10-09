@@ -71,3 +71,28 @@ function sleepy_leaf_scripts() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'sleepy_leaf_scripts');
+
+/* Register sidebar widgeits.
+ * 
+ * @since 1.0.0
+ */
+function sleepy_leaf_widgets_init() {
+    register_sidebar( array (
+        'name' => __( 'Primary Widget Area', 'sleepy_leaf' ),
+        'id' => 'sidebar-1',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h1 class="widget-title">',
+        'after_title' => '</h1>'
+    ) );
+    
+    register_sidebar( array(
+        'name' => __( 'Secondary Widget Area', 'sleepy_leaf' ),
+        'id' => 'sidebar-2',
+        'before_widget' => '<aside id="%s$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h1 class="widget-title">',
+        'after_title' => '</h1>'
+    ) );
+}
+add_action( 'widgets_init', 'sleepy_leaf_widgets_init' );

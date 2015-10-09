@@ -127,3 +127,71 @@ if( ! function_exists( 'sleepy_leaf_content_nav' ) ):
     <?php
     }
 endif;
+
+if( ! function_exists( 'sleepy_leaf_comment' ) ) {
+/**
+ * Display comments and pingbacks.
+ * 
+ * @since 1.0.0
+ */
+    
+    function sleepy_leaf_comment( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment;
+        
+        if( ( 'pingback' == $comment->comment_type ) || ( 'trackback' == $comment->comment_type ) ) {
+        ?>
+            <li class="post pingback">
+                <p>
+                    <?php
+                        _e( 'Pingback:', 'sleepy_leaf' );
+                        comment_author_link();
+                        edit_comment_link( __( '(Edit)', 'sleepy_leaf' ), ' ' );
+                    ?>
+                </p>
+            </li>
+        <?php } else { ?>
+            <li <?php_comment_class((); ?> id="li-comment-<?php comment_ID(); ?>">
+                <article id="comment-<?php comment_ID(); ?>" class="comment" >
+                    <footer>
+                        <div class="comment-author" vcard">
+                            <?php
+                                echo get_avatar( $comment, 40 );
+                                printf( __( '%s <span class="says">says:</span>', 'sleepy_leaf' ),
+                                        sprintf( '<cite class="fn">%s</cite>', get_comment_link() ) );
+                            ?>
+                        </div>
+                        <?php if( '0' == $comment->comment_approved ) { ?>
+                            <em>
+                                <?php _e( 'Your comment is awaiting moderation.', 'sleepy_leaf' ); ?>
+                            </em>
+                            <br />
+                        <?php } ?>
+                        
+                        <div class="comment-meta commentmetadata">
+                            <a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
+                                <time pubdate datetime="<?php comment_time( 'c' ); ?>">
+                                    <?php printf( __( '%1$s at %2$s', 'sleepy_leaf' ), get_comment_date(), get_comment_time() ); ?>
+                                </time>
+                            </a>
+                            <?php edit_comment_link( __( '(Edit)', 'sleepy_leaf' ), ' ' ); ?>
+                        </div>
+
+                    </footer>
+                    
+                    <div class="comment-content">
+                        <?php comment_text(); ?>
+                    </div>
+                    
+                    <div class="reply">
+                        <?php
+                            comment_reply_link( array_merge( $args, array(
+                                'depth' => $depth,
+                                'max_depth' => $args['max_depth']
+                            ) ) );
+                        ?>
+                    </div>
+                </article>
+            </li>
+        <?php }
+    }
+}
